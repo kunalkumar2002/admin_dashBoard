@@ -9,6 +9,7 @@ function App() {
   const [content, setContent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [nowat, setNowAt] = useState("dashbord");
+  const [update, setUpdate] = useState("");
 
   const itemsPerPage = 10;
 
@@ -32,12 +33,30 @@ function App() {
     setContent(newData);
   };
   const handleUpdate = (item) => {
-    console.log(item);
+    //console.log(item);
+    setUpdate(item);
     setNowAt("update");
   };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+  const handleChange = (updatedItem) => {
+    console.log(updatedItem);
+    // Find the index of the item in the content array
+    const index = content.findIndex((item) => item.id === updatedItem.id);
+
+    if (index !== -1) {
+      // Create a new array with the updated item
+      const updatedContent = [...content];
+      updatedContent[index] = updatedItem;
+
+      // Update the state with the new array
+      setContent(updatedContent);
+
+      // Set nowat back to "dashboard"
+      setNowAt("dashbord");
+    }
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -49,7 +68,7 @@ function App() {
       {nowat === "update" && (
         <div>
           <button onClick={() => setNowAt("dashbord")}>Dashboard</button>
-          <Updatecontent />
+          <Updatecontent data={update} onUpdate={handleChange} />
         </div>
       )}
       {nowat === "dashbord" && (
