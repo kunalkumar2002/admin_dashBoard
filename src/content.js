@@ -36,11 +36,30 @@ const Content = (props) => {
     }
   };
 
-
   // Update the data when initialData prop changes
   useEffect(() => {
     setData(initialData);
   }, [initialData]);
+
+  const handleBulkdelete = () => {
+    //console.log("delete");
+    if (selectedRows.length > 0) {
+      // Filter out selected rows from the data
+      const newData = data.filter((item) => !selectedRows.includes(item.id));
+
+      // Update the state with the new data
+      setData(newData);
+
+      // Call handleDelete for each selected row
+      selectedRows.forEach((id) => {
+        console.log(id);
+        handleDelete(id);
+      });
+
+      // Clear the selected rows after deletion
+      setSelectedRows([]);
+    }
+  };
 
   //   console.log(selectedRows);
   return (
@@ -61,17 +80,19 @@ const Content = (props) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleSearch}
         />
-        <span
+        <button
           style={{
             backgroundColor: "green",
-            padding: "5px",
+            padding: "10px",
             color: "white",
             border: "2px solid black",
             borderRadius: "5px",
+            cursor: "pointer",
           }}
+          onClick={handleBulkdelete}
         >
           delete
-        </span>
+        </button>
       </div>
       <div
         style={{
